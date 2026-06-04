@@ -1,7 +1,6 @@
 'use client'
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { AuthProvider, useAuth } from '@/lib/auth-context'
-import { supabase } from '@/lib/supabase'
 import Navbar from '@/components/Navbar'
 import HomeScreen from '@/components/HomeScreen'
 import ExploreScreen from '@/components/ExploreScreen'
@@ -26,15 +25,16 @@ function AppContent() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-nature">
-        <div className="w-10 h-10 border-4 border-green border-t-transparent rounded-full animate-spin" />
+      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#F7F9F7' }}>
+        <div style={{ width: 40, height: 40, border: '4px solid #1F7A63', borderTopColor: 'transparent', borderRadius: '50%', animation: 'spin 0.8s linear infinite' }} />
+        <style>{`@keyframes spin { to { transform: rotate(360deg) } }`}</style>
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-nature flex flex-col max-w-2xl mx-auto relative">
-      <main className="flex-1 overflow-y-auto pb-20">
+    <div style={{ minHeight: '100vh', background: '#F7F9F7', display: 'flex', flexDirection: 'column', maxWidth: 672, margin: '0 auto', position: 'relative' }}>
+      <main style={{ flex: 1, overflowY: 'auto', paddingBottom: 80 }}>
         {activeTab === 'home' && <HomeScreen onRequireAuth={() => setShowAuth(true)} />}
         {activeTab === 'explore' && <ExploreScreen />}
         {activeTab === 'upload' && <UploadScreen />}

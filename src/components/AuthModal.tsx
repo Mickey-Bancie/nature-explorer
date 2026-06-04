@@ -25,51 +25,61 @@ export default function AuthModal({ onClose }: { onClose: () => void }) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
-      {/* Mountain background */}
+      {/* Mountain background using CSS gradient + overlay */}
       <div
         className="absolute inset-0"
         style={{
-          backgroundImage: 'url(https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1600&q=80)',
+          backgroundImage: `url("https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1600&q=80")`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
         }}
       />
-      {/* Subtle overlay */}
-      <div className="absolute inset-0 bg-black/10" />
+      <div className="absolute inset-0" style={{ background: 'rgba(0,0,0,0.15)' }} />
 
       {/* Card */}
-      <div className="relative bg-white/95 backdrop-blur-sm rounded-2xl p-8 w-full max-w-sm mx-4 shadow-2xl">
-        <button onClick={onClose} className="absolute top-4 right-4 text-gray-400 hover:text-gray-600">
+      <div style={{
+        position: 'relative',
+        background: 'rgba(255,255,255,0.95)',
+        backdropFilter: 'blur(8px)',
+        borderRadius: 20,
+        padding: '32px',
+        width: '100%',
+        maxWidth: 380,
+        margin: '0 16px',
+        boxShadow: '0 25px 50px rgba(0,0,0,0.25)',
+      }}>
+        <button onClick={onClose} style={{ position: 'absolute', top: 16, right: 16, background: 'none', border: 'none', cursor: 'pointer', color: '#9ca3af' }}>
           <X size={20} />
         </button>
-        <h2 className="text-2xl font-bold text-[#1F7A63] mb-1 text-center">
+
+        <h2 style={{ fontSize: 26, fontWeight: 700, color: '#1F7A63', textAlign: 'center', marginBottom: 4 }}>
           {mode === 'signin' ? 'Welcome Back' : 'Join Nature Explorer'}
         </h2>
-        <p className="text-sm text-gray-500 mb-6 text-center">
+        <p style={{ fontSize: 14, color: '#6b7280', textAlign: 'center', marginBottom: 24 }}>
           {mode === 'signin' ? 'Continue your mountain adventure' : 'Start exploring nature spots'}
         </p>
 
-        <form onSubmit={handleSubmit} className="flex flex-col gap-3">
+        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
           <div>
-            <label className="text-sm text-gray-600 mb-1 block">Email</label>
+            <label style={{ fontSize: 13, color: '#374151', display: 'block', marginBottom: 6 }}>Email</label>
             <input
               type="email" placeholder="your@email.com" value={email}
               onChange={e => setEmail(e.target.value)} required
-              className="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm outline-none focus:border-[#1F7A63] bg-white"
+              style={{ width: '100%', padding: '12px 16px', border: '1px solid #e5e7eb', borderRadius: 12, fontSize: 14, outline: 'none', boxSizing: 'border-box' }}
             />
           </div>
           <div>
-            <label className="text-sm text-gray-600 mb-1 block">Password</label>
+            <label style={{ fontSize: 13, color: '#374151', display: 'block', marginBottom: 6 }}>Password</label>
             <input
               type="password" placeholder="Enter your password" value={password}
               onChange={e => setPassword(e.target.value)} required
-              className="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm outline-none focus:border-[#1F7A63] bg-white"
+              style={{ width: '100%', padding: '12px 16px', border: '1px solid #e5e7eb', borderRadius: 12, fontSize: 14, outline: 'none', boxSizing: 'border-box' }}
             />
           </div>
-          {error && <p className="text-red-500 text-xs">{error}</p>}
+          {error && <p style={{ color: '#dc2626', fontSize: 12 }}>{error}</p>}
           <button
             type="submit" disabled={loading}
-            className="w-full bg-[#1F7A63] text-white rounded-xl py-3 font-semibold text-sm disabled:opacity-50 hover:bg-[#0F5040] transition-colors mt-1"
+            style={{ width: '100%', background: '#1F7A63', color: '#fff', border: 'none', borderRadius: 12, padding: '14px', fontSize: 15, fontWeight: 600, cursor: 'pointer', marginTop: 4, opacity: loading ? 0.6 : 1 }}
           >
             {loading ? 'Loading...' : mode === 'signin' ? 'Return to Nature' : 'Start Exploring'}
           </button>
@@ -77,7 +87,7 @@ export default function AuthModal({ onClose }: { onClose: () => void }) {
 
         <button
           onClick={signInWithGoogle}
-          className="w-full mt-3 border border-gray-200 rounded-xl py-3 text-sm text-gray-600 hover:bg-gray-50 transition-colors flex items-center justify-center gap-2"
+          style={{ width: '100%', marginTop: 12, border: '1px solid #e5e7eb', borderRadius: 12, padding: '12px', fontSize: 14, color: '#374151', background: '#fff', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8 }}
         >
           <svg width="18" height="18" viewBox="0 0 24 24">
             <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
@@ -88,9 +98,10 @@ export default function AuthModal({ onClose }: { onClose: () => void }) {
           Continue with Google
         </button>
 
-        <p className="text-center text-sm text-gray-500 mt-4">
+        <p style={{ textAlign: 'center', fontSize: 13, color: '#6b7280', marginTop: 16 }}>
           {mode === 'signin' ? "New explorer? " : "Already have an account? "}
-          <button onClick={() => setMode(mode === 'signin' ? 'signup' : 'signin')} className="text-[#1F7A63] font-semibold">
+          <button onClick={() => setMode(mode === 'signin' ? 'signup' : 'signin')}
+            style={{ color: '#1F7A63', fontWeight: 600, background: 'none', border: 'none', cursor: 'pointer' }}>
             {mode === 'signin' ? 'Sign up' : 'Sign in'}
           </button>
         </p>

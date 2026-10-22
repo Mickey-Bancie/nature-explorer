@@ -1,0 +1,37 @@
+
+name: Supabase Health Check
+
+on:
+  schedule:
+    # Sunday, Monday, Tuesday, Thursday, Friday at 12:00 UTC
+    - cron: "0 12 * * 0,1,2,4,5"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check-supabase:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Query Supabase health check
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_KEY: ${{ secrets.SUPABASE_PUBLISHABLE_KEY }}
+        run: |
+          response=$(curl --fail-with-body --silent --show-error \
+            --retry 2 \
+            --get \
+            "${SUPABASE_URL}/rest/v1/health_checks" \
+            --data-urlencode "select=id,status" \
+            --data-urlencode "id=eq.1" \
+            -H "apikey: ${SUPABASE_KEY}" \
+            -H "Accept: application/json")
+
+          echo "$response" | grep -q '"status":"ok"' || {
+            echo "Health check failed: expected record not found."
+            exit 1
+          }
+
+          echo "Supabase health check passed."
